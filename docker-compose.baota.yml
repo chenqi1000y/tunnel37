@@ -1,0 +1,50 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: tunnel37-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    restart: unless-stopped
+    volumes:
+      - tunnel37-redis-data:/data
+    networks:
+      - tunnel37
+
+  tunnel-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tunnel37/server:latest
+    container_name: tunnel37-server
+    depends_on:
+      - redis
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      TUNNEL_SERVER_ADDR: 0.0.0.0:9080
+      TUNNEL_TCP_ADDR: 0.0.0.0:9081
+      TUNNEL_SOCKS_ADDR: 0.0.0.0:21080
+      TUNNEL_SHARED_TOKEN: ${TUNNEL_SHARED_TOKEN:?set TUNNEL_SHARED_TOKEN}
+      TUNNEL_ADMIN_USER: ${TUNNEL_ADMIN_USER:-admin}
+      TUNNEL_ADMIN_PASS: ${TUNNEL_ADMIN_PASS:?set TUNNEL_ADMIN_PASS}
+      TUNNEL_REDIS_ADDR: redis:6379
+      TUNNEL_REDIS_PASSWORD: ""
+      TUNNEL_REDIS_DB: "0"
+      TUNNEL_REDIS_PREFIX: tunnel
+      TUNNEL_PUBLIC_BASE: ${TUNNEL_PUBLIC_BASE:-https://tunnel.ma37.com}
+      TUNNEL_PUBLIC_RELAY_ADDR: ${TUNNEL_PUBLIC_RELAY_ADDR:-tunnel.ma37.com:9081}
+      TUNNEL_SOCKS_HOST: ${TUNNEL_SOCKS_HOST:-tunnel.ma37.com}
+      TUNNEL_SOCKS_PORT_PUBLIC: ${TUNNEL_SOCKS_PORT_PUBLIC:-21080}
+    ports:
+      - "127.0.0.1:9080:9080"
+      - "9081:9081"
+      - "21080:21080"
+    networks:
+      - tunnel37
+
+volumes:
+  tunnel37-redis-data:
+
+networks:
+  tunnel37:
+    name: tunnel37
+

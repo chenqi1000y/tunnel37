@@ -1,0 +1,15 @@
+.git
+bin
+release
+tmp-build
+tmp-cache
+tmp-gocache
+tmp-gomodcache
+tmp-reuse-smoke
+*.log
+*.err.log
+*.exe
+tunnel-server
+tunnel-server.env
+scripts/__pycache__
+
