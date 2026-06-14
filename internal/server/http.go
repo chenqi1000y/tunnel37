@@ -56,6 +56,7 @@ func (s *HTTPServer) AttachSocksServer(socks *SocksEntryServer) {
 
 func (s *HTTPServer) ListenAndServe() error {
 	mux := http.NewServeMux()
+	mux.HandleFunc("/", s.handleRoot)
 	mux.HandleFunc("/livez", s.handleLivez)
 	mux.HandleFunc("/healthz", s.handleHealthz)
 	mux.HandleFunc("/readyz", s.handleHealthz)
@@ -91,6 +92,14 @@ func (s *HTTPServer) Shutdown(ctx context.Context) error {
 		return nil
 	}
 	return s.httpServer.Shutdown(ctx)
+}
+
+func (s *HTTPServer) handleRoot(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+	http.Redirect(w, r, "/admin", http.StatusFound)
 }
 
 func (s *HTTPServer) handleLivez(w http.ResponseWriter, _ *http.Request) {
