@@ -24,7 +24,11 @@ systemctl stop "$SERVICE_NAME" 2>/dev/null || true
 systemctl reset-failed "$SERVICE_NAME" 2>/dev/null || true
 
 echo "复制 tunnel-server"
-cp -a "$PACKAGE_DIR/tunnel-server" "$APP_DIR/tunnel-server"
+if [ "$PACKAGE_DIR/tunnel-server" != "$APP_DIR/tunnel-server" ]; then
+  cp -a "$PACKAGE_DIR/tunnel-server" "$APP_DIR/tunnel-server"
+else
+  echo "安装包目录与应用目录相同，跳过复制"
+fi
 chmod +x "$APP_DIR/tunnel-server"
 
 if [ ! -f "$APP_DIR/tunnel-server.env" ]; then
@@ -83,4 +87,3 @@ echo "部署完成"
 echo "管理后台: http://$DOMAIN/admin"
 echo "Relay 端口: $DOMAIN:9081"
 echo "SOCKS5 端口: $DOMAIN:21080"
-

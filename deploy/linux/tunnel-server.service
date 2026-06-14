@@ -11,8 +11,6 @@ Restart=always
 RestartSec=3
 User=root
 LimitNOFILE=1048576
-StandardOutput=append:/opt/demo-go-tunnel/logs/tunnel-server.log
-StandardError=append:/opt/demo-go-tunnel/logs/tunnel-server.err.log
 
 [Install]
 WantedBy=multi-user.target

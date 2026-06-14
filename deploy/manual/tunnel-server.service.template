@@ -11,9 +11,6 @@ Restart=always
 RestartSec=3
 User=root
 LimitNOFILE=1048576
-StandardOutput=append:__APP_DIR__/logs/tunnel-server.log
-StandardError=append:__APP_DIR__/logs/tunnel-server.err.log
 
 [Install]
 WantedBy=multi-user.target
-

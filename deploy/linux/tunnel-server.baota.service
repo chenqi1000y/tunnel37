@@ -11,8 +11,6 @@ Restart=always
 RestartSec=3
 User=root
 LimitNOFILE=1048576
-StandardOutput=append:/www/wwwroot/tunnel37git/logs/tunnel-server.log
-StandardError=append:/www/wwwroot/tunnel37git/logs/tunnel-server.err.log
 
 [Install]
 WantedBy=multi-user.target
