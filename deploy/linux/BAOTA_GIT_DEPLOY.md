@@ -18,10 +18,13 @@ Recommended Go version: `1.25+`.
 
 ## 2. Clone Repository
 
+BaoTa recommended path:
+
 ```bash
-cd /opt
-git clone https://github.com/chenqi1000y/tunnel37.git demo-go-tunnel
-cd /opt/demo-go-tunnel
+mkdir -p /www/wwwroot
+cd /www/wwwroot
+git clone https://github.com/chenqi1000y/tunnel37.git tunnel37git
+cd /www/wwwroot/tunnel37git
 ```
 
 If the repository is private, use SSH clone or GitHub token authentication.
@@ -29,7 +32,7 @@ If the repository is private, use SSH clone or GitHub token authentication.
 ## 3. Create Environment File
 
 ```bash
-cat >/opt/demo-go-tunnel/tunnel-server.env <<'EOF'
+cat >/www/wwwroot/tunnel37git/tunnel-server.env <<'EOF'
 TUNNEL_SERVER_ADDR=127.0.0.1:9080
 TUNNEL_TCP_ADDR=0.0.0.0:9081
 TUNNEL_SOCKS_ADDR=0.0.0.0:21080
@@ -46,13 +49,13 @@ TUNNEL_SOCKS_HOST=tunnel.ma37.com
 TUNNEL_SOCKS_PORT_PUBLIC=21080
 EOF
 
-chmod 600 /opt/demo-go-tunnel/tunnel-server.env
+chmod 600 /www/wwwroot/tunnel37git/tunnel-server.env
 ```
 
 ## 4. Install systemd Service
 
 ```bash
-cp /opt/demo-go-tunnel/deploy/linux/tunnel-server.service /etc/systemd/system/tunnel-server.service
+cp /www/wwwroot/tunnel37git/deploy/linux/tunnel-server.baota.service /etc/systemd/system/tunnel-server.service
 systemctl daemon-reload
 systemctl enable tunnel-server.service
 ```
@@ -60,7 +63,7 @@ systemctl enable tunnel-server.service
 ## 5. Build and Start
 
 ```bash
-cd /opt/demo-go-tunnel
+cd /www/wwwroot/tunnel37git
 go build -o tunnel-server ./cmd/tunnel-server
 chmod +x tunnel-server
 systemctl restart tunnel-server.service
@@ -110,15 +113,15 @@ Do not expose `9080` or `6379` to the public internet.
 After the first deployment:
 
 ```bash
-cd /opt/demo-go-tunnel
+cd /www/wwwroot/tunnel37git
 bash deploy/linux/git-deploy.sh
 ```
 
 Or with runtime detail:
 
 ```bash
-cd /opt/demo-go-tunnel
-TUNNEL_ADMIN_USER=admin TUNNEL_ADMIN_PASS='your-admin-password' bash deploy/linux/git-deploy.sh
+cd /www/wwwroot/tunnel37git
+APP_DIR=/www/wwwroot/tunnel37git TUNNEL_ADMIN_USER=admin TUNNEL_ADMIN_PASS='your-admin-password' bash deploy/linux/git-deploy.sh
 ```
 
 ## 9. Verify
@@ -141,4 +144,3 @@ SOCKS5 format:
 ```txt
 socks5://<proxy_id>:<shared-token>@tunnel.ma37.com:21080
 ```
-
