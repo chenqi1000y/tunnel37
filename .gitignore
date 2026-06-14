@@ -1,0 +1,38 @@
+# Build outputs
+/bin/
+/release/
+/tmp-build/
+/tmp-cache/
+/tmp-gocache/
+/tmp-gomodcache/
+/tmp-reuse-smoke/
+/tunnel-server
+/tunnel-server.exe
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary generated files
+__pycache__/
+*.pyc
+internal/contracts/proto.go.*
+
+# Logs and runtime state
+*.log
+*.err.log
+*.pid
+*.state.json
+tmp-register.json
+
+# Local secrets and deployment env
+.env
+*.env
+tunnel-server.env
+*.env.local
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
