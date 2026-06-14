@@ -1,0 +1,19 @@
+[Unit]
+Description=tunnel.ma37.com Tunnel Server
+After=network.target redis.service
+
+[Service]
+Type=simple
+WorkingDirectory=__APP_DIR__
+EnvironmentFile=__APP_DIR__/tunnel-server.env
+ExecStart=__APP_DIR__/tunnel-server
+Restart=always
+RestartSec=3
+User=root
+LimitNOFILE=1048576
+StandardOutput=append:__APP_DIR__/logs/tunnel-server.log
+StandardError=append:__APP_DIR__/logs/tunnel-server.err.log
+
+[Install]
+WantedBy=multi-user.target
+
